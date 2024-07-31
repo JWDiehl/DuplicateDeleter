@@ -19,24 +19,27 @@ public final class IntegerDuplicateDeleter extends DuplicateDeleter<Integer> {
     @Override
     public Integer[] removeDuplicates(int maxNumberOfDuplications) {
         Integer[] array = this.array;
-        int[] counts = new int[array.length];
+        int length = array.length;
+        int[] counts = new int[length];
 
-        //Count occurences - for loop
-        for (int i = 0; i < array.length; i++) {
-            counts[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (array[i].equals(array[j])) {
-                    counts[j]++;
-                    counts[i] = 0;
-                    break;
+        // Count occrrences - for loop
+        for (int i = 0; i < length; i++) {
+            if (counts[i] == 0) { // Element not yet counted
+                int count = 1;
+                for (int j = i + 1; j < length; j++) {
+                    if (array[i].equals(array[j])) {
+                        count++;
+                        counts[j] = -1; // these are for the counted
+                    }
                 }
+                counts[i] = count;
             }
         }
 
         //Determine the size of new array
         int newSize = 0;
         for (int count : counts) {
-            if (count < maxNumberOfDuplications) {
+            if (count < maxNumberOfDuplications && count > 0) {
                 newSize++;
             }
         }
@@ -44,8 +47,8 @@ public final class IntegerDuplicateDeleter extends DuplicateDeleter<Integer> {
         //Create new array
         Integer[] resultArray = new Integer[newSize];
         int index = 0;
-        for (int i = 0; i < array.length; i++){
-            if (counts[i] < maxNumberOfDuplications) {
+        for (int i = 0; i < length; i++){
+            if (counts[i] < maxNumberOfDuplications && counts[i] > 0) {
                 resultArray[index++] = array[i];
             }
         }
@@ -55,24 +58,27 @@ public final class IntegerDuplicateDeleter extends DuplicateDeleter<Integer> {
     @Override
     public Integer[] removeDuplicatesExactly(int exactNumberOfDuplications) {
         Integer[] array = this.array;
-        int[] counts = new int[array.length];
+        int length = array.length;
+        int[] counts = new int[length];
 
         //count occurences of each element
-        for (int i = 0; i < array.length; i++) {
-            counts[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (array[i].equals(array[j])) {
-                    counts[j]++;
-                    counts[i] = 0;
-                    break;
+        for (int i = 0; i < length; i++) {
+            if (counts[i] == 0) { // Element not yet counted
+                int count = 1;
+                for (int j = i + 1; j < length; j++) {
+                    if (array[i].equals(array[j])) {
+                        count++;
+                        counts[j] = -1; // counted
+                    }
                 }
+                counts[i] = count;
             }
         }
 
         //Determine the size of new ARRAY
         int newSize = 0;
         for (int count : counts) {
-            if (count != exactNumberOfDuplications) {
+            if (count != exactNumberOfDuplications && count > 0) {
                 newSize++;
             }
         }
@@ -80,8 +86,8 @@ public final class IntegerDuplicateDeleter extends DuplicateDeleter<Integer> {
         //Create new array
         Integer[] resultArray = new Integer[newSize];
         int index = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (counts[i] != exactNumberOfDuplications) {
+        for (int i = 0; i < length; i++) {
+            if (counts[i] != exactNumberOfDuplications && counts[i] > 0) {
                 resultArray[index++] = array[i];
             }
         }
