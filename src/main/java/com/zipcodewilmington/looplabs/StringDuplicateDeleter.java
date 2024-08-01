@@ -1,6 +1,6 @@
 package com.zipcodewilmington.looplabs;
 
-/**
+import java.util.Arrays; /**
  * Created by leon on 1/28/18.
  * @ATTENTION_TO_STUDENTS You are forbidden from modifying the signature of this class.
  */
@@ -15,74 +15,94 @@ public final class StringDuplicateDeleter extends DuplicateDeleter<String> {
 
     @Override
     public String[] removeDuplicates(int maxNumberOfDuplications) {
-        String[] array = this.array;
-        int[] counts = new int[array.length];
 
-        //Count occurences - for loop
-        for (int i = 0; i < array.length; i++) {
-            counts[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (array[i].equals(array[j])) {
-                    counts[j]++;
-                    counts[i] = 0;
-                    break;
-                }
-            }
-        }
 
-        //Determine the size of new array
-        int newSize = 0;
-        for (int count : counts) {
-            if (count < maxNumberOfDuplications) {
-                newSize++;
-            }
-        }
-
-        //Create new array
-        String[] resultArray = new String[newSize];
-        int index = 0;
-        for (int i = 0; i < array.length; i++){
-            if (counts[i] < maxNumberOfDuplications) {
-                resultArray[index++] = array[i];
-            }
-        }
-        return resultArray;
+        //Using a stream
+        return Arrays.stream(array).filter(s -> getOccurence(s) < maxNumberOfDuplications).toArray(String[]::new);
     }
+
+    public Long getOccurence(String x) {
+
+
+        return Arrays.stream(array).filter(y -> y.equals(x)).count();
+    }
+
+//
+//        String[] array = this.array;
+//        int[] counts = new int[array.length];
+//
+//        //Count occurences - for loop
+//        for (int i = 0; i < array.length; i++) {
+//            counts[i] = 1;
+//            for (int j = 0; j < i; j++) {
+//                if (array[i].equals(array[j])) {
+//                    counts[j]++;
+//                    counts[i] = 0;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        //Determine the size of new array
+//        int newSize = 0;
+//        for (int count : counts) {
+//            if (count < maxNumberOfDuplications) {
+//                newSize++;
+//            }
+//        }
+//
+//        //Create new array
+//        String[] resultArray = new String[newSize];
+//        int index = 0;
+//        for (int i = 0; i < array.length; i++){
+//            if (counts[i] < maxNumberOfDuplications) {
+//                resultArray[index++] = array[i];
+//            }
+//        }
+//        return resultArray;
+//    }
 
     @Override
     public String[] removeDuplicatesExactly(int exactNumberOfDuplications) {
-        String[] array = this.array;
-        int[] counts = new int[array.length];
 
-        //Count occurences
-        for (int i = 0; i < array.length; i++) {
-            counts[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (array[i].equals(array[j])) {
-                    counts[j]++;
-                    counts[i] = 0;
-                    break;
-                }
-            }
-        }
-
-        //Size of newArray
-        int newSize = 0;
-        for (int count : counts) {
-            if (count != exactNumberOfDuplications) {
-                newSize++;
-            }
-        }
-
-        //Create resultArray
-        String[] resultArray = new String[newSize];
-        int index = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (counts[i] != exactNumberOfDuplications) {
-                resultArray[index++] = array[i];
-            }
-        }
-
-        return resultArray;
+        //Using a stream
+        return Arrays.stream(array).filter(ele -> getOccurence(ele) != exactNumberOfDuplications).toArray(String[]::new);
     }
 }
+
+//
+//        String[] array = this.array;
+//        int[] counts = new int[array.length];
+//
+//        //Count occurences
+//        for (int i = 0; i < array.length; i++) {
+//            counts[i] = 1;
+//            for (int j = 0; j < i; j++) {
+//                if (array[i].equals(array[j])) {
+//                    counts[j]++;
+//                    counts[i] = 0;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        //Size of newArray
+//        int newSize = 0;
+//        for (int count : counts) {
+//            if (count != exactNumberOfDuplications) {
+//                newSize++;
+//            }
+//        }
+//
+//        //Create resultArray
+//        String[] resultArray = new String[newSize];
+//        int index = 0;
+//        for (int i = 0; i < array.length; i++) {
+//            if (counts[i] != exactNumberOfDuplications) {
+//                resultArray[index++] = array[i];
+//            }
+//        }
+//
+//        return resultArray;
+//    }
+//}
